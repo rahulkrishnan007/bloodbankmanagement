@@ -9,9 +9,16 @@ services:
       python manage.py migrate
     startCommand: gunicorn bloodbankmanagement.wsgi:application
     envVars:
-      - key: DJANGO_SETTINGS_MODULE
-        value: bloodbankmanagement.settings
       - key: SECRET_KEY
         generateValue: true
       - key: DEBUG
-        value: "False"
+        value: False
+      - key: DISABLE_COLLECTSTATIC
+        value: 0
+    healthCheckPath: /
+
+databases:
+  - name: bloodbankdb
+    plan: free
+    databaseName: bloodbank
+    user: bloodbank_user
