@@ -1,0 +1,28 @@
+{% load static %}
+<nav class="site-nav navbar navbar-expand-lg ">
+  <div class="container">
+    <a href="/" class="brand"><img src="{% static 'image/logo.svg' %}" alt=""><span>Life<b>Flow</b></span></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav"><i class="fas fa-bars"></i></button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ml-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="/#availability">Availability</a></li>
+        <li class="nav-item"><a class="nav-link" href="/compatibility">Compatibility</a></li>
+        <li class="nav-item"><a class="nav-link" href="/camps">Donation Camps</a></li>
+        <li class="nav-item"><a class="nav-link" href="/#faq">FAQ</a></li>
+        {% if user.is_authenticated %}
+        <li class="nav-item ml-lg-2"><a class="btn btn-red btn-sm" href="/afterlogin"><i class="fas fa-th-large mr-1"></i> My Dashboard</a></li>
+        {% else %}
+        <li class="nav-item dropdown ml-lg-2">
+          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"><i class="far fa-user-circle mr-1"></i> Login</a>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="/donor/donorlogin"><i class="fas fa-hand-holding-heart"></i> Donor login</a>
+            <a class="dropdown-item" href="/patient/patientlogin"><i class="fas fa-procedures"></i> Patient login</a>
+            <a class="dropdown-item" href="/adminlogin"><i class="fas fa-user-shield"></i> Admin login</a>
+          </div>
+        </li>
+        <li class="nav-item ml-lg-1"><a class="btn btn-red btn-sm" href="/donor/donorsignup"><i class="fas fa-tint mr-1"></i> Become a Donor</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

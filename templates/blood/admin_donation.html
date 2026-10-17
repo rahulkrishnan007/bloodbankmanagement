@@ -1,0 +1,22 @@
+{% extends 'blood/adminbase.html' %}
+{% block title %}Donations{% endblock %}
+{% block heading %}Donations{% endblock %}
+{% block content %}
+<div class="page-head"><div><h2>Blood donations</h2><p>Approve a donation to add its units to the stock.</p></div><a href="/export/donations.csv" class="btn btn-soft"><i class="fas fa-file-csv mr-1"></i>Export CSV</a></div>
+<div class="card-x">
+  <form method="get" class="filter-bar">
+    <select name="status" class="custom-select" onchange="this.form.submit()"><option value="">All statuses</option><option value="Pending" {% if status == 'Pending' %}selected{% endif %}>Pending</option><option value="Approved" {% if status == 'Approved' %}selected{% endif %}>Approved</option><option value="Rejected" {% if status == 'Rejected' %}selected{% endif %}>Rejected</option></select>
+  </form>
+  {% if page.object_list %}
+  <div class="table-responsive-x"><table class="table-x"><thead><tr><th>Donor</th><th>Age</th><th>Group</th><th>Unit</th><th>Disease / medication</th><th>Date</th><th>Status</th><th class="text-right">Action</th></tr></thead><tbody>
+  {% for t in page.object_list %}
+    <tr><td><div class="cell-user"><span class="avatar avatar-sm">{{ t.donor.user.first_name|slice:":1"|upper }}</span><b>{{ t.donor.get_name }}</b></div></td><td>{{ t.age }}</td><td><span class="group-pill">{{ t.bloodgroup }}</span></td><td>{{ t.unit }} ml</td>
+    <td>{{ t.disease }}</td><td>{{ t.date }}</td><td><span class="badge-status status-{{ t.status|lower }}">{{ t.status }}</span></td>
+    <td class="text-right" style="white-space:nowrap">{% if t.status == 'Pending' %}
+      <form method="post" action="{% url 'approve-donation' t.id %}" class="d-inline">{% csrf_token %}<button class="btn btn-ok btn-sm"><i class="fas fa-check mr-1"></i>Approve</button></form>
+      <form method="post" action="{% url 'reject-donation' t.id %}" class="d-inline" data-confirm="Reject this donation?">{% csrf_token %}<button class="btn btn-soft btn-sm" style="color:var(--red)"><i class="fas fa-times mr-1"></i>Reject</button></form>{% else %}<span class="text-muted">&mdash;</span>{% endif %}</td></tr>
+  {% endfor %}</tbody></table></div>
+  {% include 'layout/pagination.html' %}
+  {% else %}<div class="empty"><i class="fas fa-hand-holding-medical"></i><h5>No donations found</h5></div>{% endif %}
+</div>
+{% endblock %}

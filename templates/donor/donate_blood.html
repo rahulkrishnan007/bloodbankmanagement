@@ -1,0 +1,19 @@
+{% extends 'donor/donorbase.html' %}
+{% block title %}Donate Blood{% endblock %}
+{% block heading %}Donate Blood{% endblock %}
+{% block content %}
+<div class="page-head"><div><h2>Donate blood</h2><p>Fill in your details. The blood bank will review and approve your donation.</p></div></div>
+<div class="row"><div class="col-lg-7 mb-4"><div class="card-x"><div class="card-pad">
+  <form method="post">{% csrf_token %}
+    <div class="row">
+      <div class="col-md-6"><div class="form-group"><label>Age *</label>{{ donation_form.age }}{% for e in donation_form.age.errors %}<div class="invalid-msg">{{ e }}</div>{% endfor %}</div></div>
+      <div class="col-md-6"><div class="form-group"><label>Blood group *</label>{{ donation_form.bloodgroup }}{% for e in donation_form.bloodgroup.errors %}<div class="invalid-msg">{{ e }}</div>{% endfor %}</div></div>
+      <div class="col-md-6"><div class="form-group"><label>Unit (ml) *</label>{{ donation_form.unit }}<div class="help-msg">{{ donation_form.unit.help_text }}</div>{% for e in donation_form.unit.errors %}<div class="invalid-msg">{{ e }}</div>{% endfor %}</div></div>
+      <div class="col-md-6"><div class="form-group"><label>Any disease / medication?</label>{{ donation_form.disease }}</div></div>
+    </div>
+    <button class="btn btn-red btn-lg" type="submit"><i class="fas fa-hand-holding-heart mr-2"></i>Submit donation</button>
+  </form></div></div></div>
+  <div class="col-lg-5 mb-4"><div class="card-x"><div class="card-head"><h5>Before you donate</h5></div><div class="card-pad"><ul class="check-list">
+    <li><i class="fas fa-check-circle"></i> Eat a healthy meal and drink plenty of water</li><li><i class="fas fa-check-circle"></i> Get a good night's sleep</li><li><i class="fas fa-check-circle"></i> Avoid alcohol for 24 hours</li><li><i class="fas fa-check-circle"></i> Carry a valid photo ID</li></ul></div></div></div>
+</div>
+{% endblock %}

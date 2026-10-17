@@ -1,0 +1,22 @@
+{% extends 'blood/adminbase.html' %}
+{% block title %}Request History{% endblock %}
+{% block heading %}Request History{% endblock %}
+{% block content %}
+<div class="page-head"><div><h2>Request history</h2><p>Approved and rejected requests.</p></div></div>
+<div class="card-x">
+  <form method="get" class="filter-bar">
+    <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="Search patient, hospital, reason...">
+    <select name="status" class="custom-select"><option value="">All statuses</option><option value="Approved" {% if status == 'Approved' %}selected{% endif %}>Approved</option><option value="Rejected" {% if status == 'Rejected' %}selected{% endif %}>Rejected</option></select>
+    <button class="btn btn-red btn-sm"><i class="fas fa-search mr-1"></i>Filter</button>{% if q or status %}<a href="?" class="btn btn-soft btn-sm">Reset</a>{% endif %}
+  </form>
+  {% if page.object_list %}
+  <div class="table-responsive-x"><table class="table-x"><thead><tr><th>Patient</th><th>Age</th><th>Group</th><th>Unit</th><th>Priority</th><th>Hospital / reason</th><th>Date</th><th>Status</th></tr></thead><tbody>
+  {% for t in page.object_list %}
+    <tr><td><b>{{ t.patient_name }}</b></td><td>{{ t.patient_age }}</td><td><span class="group-pill">{{ t.bloodgroup }}</span></td><td>{{ t.unit }} ml</td>
+    <td><span class="prio prio-{{ t.priority|lower }}">{{ t.priority }}</span></td><td style="max-width:260px">{% if t.hospital %}<b>{{ t.hospital }}</b><br>{% endif %}<small class="text-muted">{{ t.reason }}</small></td><td>{{ t.date }}</td>
+    <td><span class="badge-status status-{{ t.status|lower }}">{{ t.status }}</span></td></tr>
+  {% endfor %}</tbody></table></div>
+  {% include 'layout/pagination.html' %}
+  {% else %}<div class="empty"><i class="fas fa-history"></i><h5>No history yet</h5></div>{% endif %}
+</div>
+{% endblock %}

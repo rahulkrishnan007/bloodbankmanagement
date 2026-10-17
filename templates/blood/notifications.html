@@ -1,0 +1,17 @@
+{% extends layout %}
+{% block title %}Notifications{% endblock %}
+{% block heading %}Notifications{% endblock %}
+{% block content %}
+<div class="page-head"><div><h2>Notifications</h2><p>Updates about your donations and requests.</p></div>
+  {% if unread_count %}<form method="post" action="{% url 'notifications-read' %}">{% csrf_token %}<button class="btn btn-soft"><i class="fas fa-check-double mr-1"></i>Mark all as read</button></form>{% endif %}</div>
+<div class="card-x form-card">
+  {% for n in page.object_list %}
+  <div class="notif {% if not n.is_read %}unread{% endif %}">
+    <div class="ic {% if n.level == 'success' %}ic-ok{% elif n.level == 'danger' %}ic-red{% else %}ic-info{% endif %}"><i class="fas {% if n.level == 'success' %}fa-check{% elif n.level == 'danger' %}fa-times{% else %}fa-info{% endif %}"></i></div>
+    <div class="flex-grow-1">{% if n.link %}<a href="{{ n.link }}" class="text-dark">{{ n.message }}</a>{% else %}{{ n.message }}{% endif %}<div class="small text-muted">{{ n.created|timesince }} ago</div></div>
+    {% if not n.is_read %}<span class="badge-status status-pending">New</span>{% endif %}
+  </div>
+  {% empty %}<div class="empty"><i class="far fa-bell-slash"></i><h5>No notifications yet</h5><p class="mb-0">We will let you know when something changes.</p></div>{% endfor %}
+  {% include 'layout/pagination.html' %}
+</div>
+{% endblock %}

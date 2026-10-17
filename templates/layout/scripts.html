@@ -1,0 +1,8 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // auto-dismiss toast messages
+  setTimeout(function(){ $('.toast-x').fadeOut(400); }, 6000);
+  // confirm dialogs for dangerous buttons:  <form data-confirm="Are you sure?">
+  $(document).on('submit', 'form[data-confirm]', function(e){ if(!confirm($(this).data('confirm'))) e.preventDefault(); });
+</script>

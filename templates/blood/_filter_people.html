@@ -1,0 +1,6 @@
+<form method="get" class="filter-bar">
+  <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="Search name, address, mobile...">
+  <select name="bloodgroup" class="custom-select"><option value="">All blood groups</option>{% for g in groups %}<option value="{{ g }}" {% if g == bg %}selected{% endif %}>{{ g }}</option>{% endfor %}</select>
+  <button class="btn btn-red btn-sm" type="submit"><i class="fas fa-search mr-1"></i>Filter</button>
+  {% if q or bg %}<a href="?" class="btn btn-soft btn-sm">Reset</a>{% endif %}
+</form>

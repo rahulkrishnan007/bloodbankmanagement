@@ -1,0 +1,15 @@
+{% extends 'layout/app.html' %}
+{% block sidebar %}
+{% with u=request.resolver_match.url_name %}
+<div class="side-label">Patient</div>
+<a class="side-link {% if u == 'patient-dashboard' %}active{% endif %}" href="/patient/patient-dashboard"><i class="fas fa-th-large"></i> Dashboard</a>
+<a class="side-link {% if u == 'make-request' %}active{% endif %}" href="/patient/make-request"><i class="fas fa-plus-circle"></i> Request Blood</a>
+<a class="side-link {% if u == 'my-request' %}active{% endif %}" href="/patient/my-request"><i class="fas fa-clipboard-list"></i> My Requests</a>
+<div class="side-label">More</div>
+<a class="side-link {% if u == 'find-donors' %}active{% endif %}" href="/find-donors"><i class="fas fa-search-location"></i> Find Donors</a>
+<a class="side-link {% if u == 'camps' %}active{% endif %}" href="/camps"><i class="fas fa-campground"></i> Donation Camps</a>
+<a class="side-link {% if u == 'compatibility' %}active{% endif %}" href="/compatibility"><i class="fas fa-project-diagram"></i> Compatibility</a>
+<a class="side-link {% if u == 'patient-profile' %}active{% endif %}" href="/patient/profile"><i class="fas fa-user-cog"></i> My Profile</a>
+<a class="side-link {% if u == 'notifications' %}active{% endif %}" href="/notifications"><i class="far fa-bell"></i> Notifications{% if unread_count %}<span class="count">{{ unread_count }}</span>{% endif %}</a>
+{% endwith %}
+{% endblock %}

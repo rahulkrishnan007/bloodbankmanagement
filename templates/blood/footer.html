@@ -1,0 +1,16 @@
+{% load static %}
+<footer class="site-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 mb-4">
+        <div class="brand mb-3"><img src="{% static 'image/logo.svg' %}" alt=""><span>Life<span style="color:#ff7d8d">Flow</span></span></div>
+        <p style="max-width:22rem">Connecting voluntary blood donors with patients in need. Every drop counts - every donor is a hero.</p>
+      </div>
+      <div class="col-6 col-lg-2 mb-4"><h6>Explore</h6><a href="/#availability">Live availability</a><a href="/compatibility">Blood compatibility</a><a href="/camps">Donation camps</a><a href="/#faq">FAQ</a></div>
+      <div class="col-6 col-lg-3 mb-4"><h6>Get started</h6><a href="/donor/donorsignup">Register as donor</a><a href="/patient/patientsignup">Register as patient</a><a href="/donor/donorlogin">Donor login</a><a href="/patient/patientlogin">Patient login</a></div>
+      <div class="col-lg-3 mb-4"><h6>In an emergency</h6><p class="mb-1"><i class="fas fa-phone-alt mr-2" style="color:#ff7d8d"></i>National helpline <b class="text-white">104</b></p><p><i class="fas fa-ambulance mr-2" style="color:#ff7d8d"></i>Ambulance <b class="text-white">108</b></p></div>
+    </div>
+    <hr>
+    <div class="d-flex justify-content-between flex-wrap small"><span>&copy; {% now "Y" %} LifeFlow Blood Bank Management System. Made in India.</span><a href="/adminlogin" style="display:inline">Admin portal</a></div>
+  </div>
+</footer>

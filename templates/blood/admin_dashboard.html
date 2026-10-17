@@ -1,0 +1,60 @@
+{% extends 'blood/adminbase.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block heading %}Dashboard{% endblock %}
+{% block content %}
+<div class="welcome mb-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center" style="gap:1rem;position:relative;z-index:1">
+    <div><h3>Welcome back, {{ user.first_name|default:user.username }}!</h3><p>You have <b>{{ pending_requests }}</b> blood request{{ pending_requests|pluralize }} and <b>{{ pending_donations }}</b> donation{{ pending_donations|pluralize }} waiting for review.</p></div>
+    <div><a href="/admin-request" class="btn btn-white btn-sm mr-1">Review requests</a><a href="/admin-donation" class="btn btn-ghost btn-sm">Review donations</a></div>
+  </div>
+</div>
+
+{% if emergency_requests %}<div class="alert-strip danger mb-3"><i class="fas fa-ambulance fa-lg"></i><div><b>{{ emergency_requests }} emergency request{{ emergency_requests|pluralize }}</b> pending - please review immediately. <a href="/admin-request"><b>Open &rarr;</b></a></div></div>{% endif %}
+{% if low_stock %}<div class="alert-strip warn mb-4"><i class="fas fa-exclamation-triangle fa-lg"></i><div><b>Low stock alert:</b> {% for s in low_stock %}<span class="group-pill mx-1" style="background:#fff">{{ s.group }}</span>{{ s.unit }} ml{% if not forloop.last %},{% endif %}{% endfor %} - consider organising a camp.</div></div>{% endif %}
+
+<div class="row mb-2">
+  <div class="col-6 col-xl-3 mb-3"><div class="stat-card"><div class="ic ic-red"><i class="fas fa-tint"></i></div><div><b>{{ totalbloodunit }}</b><small>Total stock (ml)</small></div></div></div>
+  <div class="col-6 col-xl-3 mb-3"><div class="stat-card"><div class="ic ic-info"><i class="fas fa-user-friends"></i></div><div><b>{{ totaldonors }}</b><small>Total donors</small></div></div></div>
+  <div class="col-6 col-xl-3 mb-3"><div class="stat-card"><div class="ic ic-warn"><i class="fas fa-user-injured"></i></div><div><b>{{ totalpatients }}</b><small>Total patients</small></div></div></div>
+  <div class="col-6 col-xl-3 mb-3"><div class="stat-card"><div class="ic ic-ok"><i class="fas fa-check-double"></i></div><div><b>{{ totalapprovedrequest }}<small class="text-muted" style="font-size:.9rem"> / {{ totalrequest }}</small></b><small>Requests approved</small></div></div></div>
+</div>
+
+<h5 class="mb-3 mt-3">Blood stock by group</h5>
+{% include 'layout/stock_tiles.html' %}
+
+<div class="row mt-2">
+  <div class="col-lg-8 mb-4"><div class="card-x h-100"><div class="card-head"><h5>Donations vs requests (last 6 months)</h5></div><div class="card-pad"><canvas id="trend" height="120"></canvas></div></div></div>
+  <div class="col-lg-4 mb-4"><div class="card-x h-100"><div class="card-head"><h5>Request status</h5></div><div class="card-pad"><canvas id="status" height="220"></canvas></div></div></div>
+</div>
+<div class="row">
+  <div class="col-lg-6 mb-4"><div class="card-x h-100"><div class="card-head"><h5>Stock level per group (ml)</h5></div><div class="card-pad"><canvas id="stockbar" height="150"></canvas></div></div></div>
+  <div class="col-lg-6 mb-4"><div class="card-x h-100"><div class="card-head"><h5>Upcoming camps</h5><a href="/admin-camps" class="btn btn-soft btn-sm">Manage</a></div>
+    {% for c in upcoming_camps %}<div class="notif"><div class="camp-date" style="width:54px"><b style="font-size:1.3rem">{{ c.date|date:"d" }}</b><small>{{ c.date|date:"M" }}</small></div><div><b>{{ c.title }}</b><div class="small text-muted">{{ c.venue }}, {{ c.city }}</div></div></div>
+    {% empty %}<div class="empty"><i class="fas fa-campground"></i><p class="mb-2">No upcoming camps.</p><a class="btn btn-red btn-sm" href="/admin-camps">Schedule one</a></div>{% endfor %}</div></div>
+</div>
+<div class="row">
+  <div class="col-lg-6 mb-4"><div class="card-x"><div class="card-head"><h5>Recent requests</h5><a href="/admin-request" class="btn btn-soft btn-sm">View</a></div>
+    {% for r in recent_requests %}<div class="notif"><span class="group-pill">{{ r.bloodgroup }}</span><div class="flex-grow-1"><b>{{ r.patient_name }}</b> <span class="prio prio-{{ r.priority|lower }}">{{ r.priority }}</span><div class="small text-muted">{{ r.unit }} ml &middot; {{ r.date }}</div></div><span class="badge-status status-{{ r.status|lower }}">{{ r.status }}</span></div>
+    {% empty %}<div class="empty"><p class="mb-0">No requests yet.</p></div>{% endfor %}</div></div>
+  <div class="col-lg-6 mb-4"><div class="card-x"><div class="card-head"><h5>Recent donations</h5><a href="/admin-donation" class="btn btn-soft btn-sm">View</a></div>
+    {% for d in recent_donations %}<div class="notif"><span class="group-pill">{{ d.bloodgroup }}</span><div class="flex-grow-1"><b>{{ d.donor.get_name }}</b><div class="small text-muted">{{ d.unit }} ml &middot; {{ d.date }}</div></div><span class="badge-status status-{{ d.status|lower }}">{{ d.status }}</span></div>
+    {% empty %}<div class="empty"><p class="mb-0">No donations yet.</p></div>{% endfor %}</div></div>
+</div>
+{{ chart_data|json_script:"chart-data" }}
+{% endblock %}
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+(function(){
+  var d = JSON.parse(document.getElementById('chart-data').textContent);
+  Chart.defaults.font.family = 'Inter, sans-serif'; Chart.defaults.color = '#5d6678';
+  var red='#d7263d', ok='#12a66a', warn='#e8890c';
+  new Chart(document.getElementById('trend'), {type:'line', data:{labels:d.months, datasets:[
+    {label:'Donated (ml)', data:d.donated, borderColor:red, backgroundColor:'rgba(215,38,61,.12)', fill:true, tension:.4, yAxisID:'y'},
+    {label:'Requests', data:d.requested, borderColor:'#2a7de1', backgroundColor:'#2a7de1', tension:.4, yAxisID:'y1'}]},
+    options:{responsive:true, interaction:{mode:'index',intersect:false}, scales:{y:{beginAtZero:true,grid:{color:'#eef0f6'}}, y1:{beginAtZero:true,position:'right',grid:{display:false},ticks:{precision:0}}}}});
+  new Chart(document.getElementById('status'), {type:'doughnut', data:{labels:['Pending','Approved','Rejected'], datasets:[{data:d.status, backgroundColor:[warn,ok,red], borderWidth:0}]}, options:{cutout:'68%', plugins:{legend:{position:'bottom'}}}});
+  new Chart(document.getElementById('stockbar'), {type:'bar', data:{labels:d.groups, datasets:[{data:d.stock, backgroundColor:red, borderRadius:8}]}, options:{plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true,grid:{color:'#eef0f6'}}, x:{grid:{display:false}}}}});
+})();
+</script>
+{% endblock %}

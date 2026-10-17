@@ -1,0 +1,16 @@
+{% extends 'blood/adminbase.html' %}
+{% block title %}Donation Camps{% endblock %}
+{% block heading %}Donation Camps{% endblock %}
+{% block content %}
+<div class="page-head"><div><h2>Donation camps</h2><p>Camps you publish appear on the public website.</p></div></div>
+<div class="row">
+  <div class="col-lg-5 mb-4"><div class="card-x"><div class="card-head"><h5><i class="fas fa-plus-circle mr-2" style="color:var(--red)"></i>Schedule a camp</h5></div><div class="card-pad">
+    <form method="post">{% csrf_token %}{% include 'layout/_form_fields.html' with form=form %}<button class="btn btn-red btn-block" type="submit">Publish camp</button></form></div></div></div>
+  <div class="col-lg-7 mb-4"><div class="card-x"><div class="card-head"><h5>All camps</h5></div>
+    {% for c in camps %}
+    <div class="notif"><div class="camp-date" style="width:58px"><b style="font-size:1.4rem">{{ c.date|date:"d" }}</b><small>{{ c.date|date:"M y" }}</small></div>
+      <div class="flex-grow-1"><b>{{ c.title }}</b><div class="small text-muted">{{ c.venue }}, {{ c.city }} &middot; {{ c.start_time|time:"g:i A" }} - {{ c.end_time|time:"g:i A" }}</div></div>
+      <form method="post" action="{% url 'delete-camp' c.id %}" data-confirm="Remove this camp?">{% csrf_token %}<button class="btn btn-soft btn-sm" style="color:var(--red)"><i class="fas fa-trash"></i></button></form></div>
+    {% empty %}<div class="empty"><i class="fas fa-campground"></i><h5>No camps yet</h5><p class="mb-0">Use the form to schedule the first one.</p></div>{% endfor %}</div></div>
+</div>
+{% endblock %}

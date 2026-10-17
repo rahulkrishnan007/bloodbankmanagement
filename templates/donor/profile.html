@@ -1,0 +1,15 @@
+{% extends 'donor/donorbase.html' %}
+{% block title %}My Profile{% endblock %}
+{% block heading %}My Profile{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-lg-4 mb-4"><div class="card-x text-center"><div class="card-pad">
+    {% if donor.profile_pic %}<img class="avatar avatar-lg mx-auto mb-3" src="{{ donor.profile_pic.url }}" alt="">{% else %}<span class="avatar avatar-lg mx-auto mb-3">{{ user.first_name|slice:":1"|upper }}</span>{% endif %}
+    <h5 class="mb-0">{{ donor.get_name }}</h5><p class="text-muted">@{{ user.username }}</p>
+    <span class="group-pill mb-2" style="font-size:1.1rem">{{ donor.bloodgroup }}</span><br><span class="badge-tier tier-{{ donor.badge.1 }}">{{ donor.badge.0 }}</span>
+    <hr><div class="row"><div class="col"><b>{{ donor.total_donations }}</b><div class="small text-muted">Donations</div></div><div class="col"><b>{{ donor.total_units }}</b><div class="small text-muted">ml</div></div><div class="col"><b>{{ donor.lives_saved }}</b><div class="small text-muted">Lives</div></div></div>
+  </div></div></div>
+  <div class="col-lg-8 mb-4"><div class="card-x"><div class="card-head"><h5>Edit details</h5></div><div class="card-pad">
+    <form method="post" enctype="multipart/form-data">{% csrf_token %}{% include 'layout/_form_fields.html' %}<button class="btn btn-red" type="submit"><i class="fas fa-save mr-1"></i>Save profile</button></form></div></div></div>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en"><head>{% include 'layout/head.html' %}<title>Donation Certificate</title>
+<style>
+ body{background:#eceef4;padding:2rem}
+ .cert{max-width:900px;margin:0 auto;background:#fff;border:14px solid #fff;outline:3px solid var(--red);outline-offset:-26px;padding:3.5rem 3rem;text-align:center;position:relative;box-shadow:var(--shadow-lg)}
+ .cert img.logo{width:70px}.cert h1{font-size:2.6rem;color:var(--red-dark);margin:.8rem 0 .2rem}
+ .cert .name{font-size:2.4rem;font-weight:800;border-bottom:2px solid var(--line);display:inline-block;padding:0 2rem .3rem;margin:1rem 0}
+ .cert .sig{margin-top:3rem;display:flex;justify-content:space-around}.cert .sig div{border-top:1px solid var(--muted);padding-top:.4rem;min-width:200px;color:var(--slate)}
+</style></head>
+<body><div class="cert">
+  <img class="logo" src="{% static 'image/logo.svg' %}" alt="">
+  <h1>Certificate of Appreciation</h1><p class="text-muted text-uppercase" style="letter-spacing:.2em">for voluntary blood donation</p>
+  <p class="mt-4 mb-0">This certificate is proudly presented to</p>
+  <div class="name">{{ donor.get_name }}</div>
+  <p class="lead mt-2">for donating <b>{{ donation.unit }} ml</b> of <b>{{ donation.bloodgroup }}</b> blood on <b>{{ donation.date|date:"d F Y" }}</b>.<br>Your generosity can save up to three lives.</p>
+  <div class="sig"><div>Medical Officer</div><div>LifeFlow Blood Bank</div></div>
+  <button class="btn btn-red mt-4 no-print" onclick="window.print()"><i class="fas fa-print mr-1"></i>Print / Save as PDF</button>
+</div></body></html>

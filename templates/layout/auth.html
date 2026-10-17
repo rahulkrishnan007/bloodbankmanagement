@@ -1,0 +1,28 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include 'layout/head.html' %}
+  <title>{% block title %}Welcome{% endblock %} | LifeFlow</title>
+</head>
+<body>
+  {% include 'layout/messages.html' %}
+  <div class="auth-wrap">
+    <div class="auth-art">
+      <a href="/" class="brand"><img src="{% static 'image/logo.svg' %}" alt=""><span>Life<span style="color:#ffb3bd">Flow</span></span></a>
+      <div>
+        <img class="art-illus" src="{% static 'image/hero-art.svg' %}" alt="">
+        <h2>{% block art_title %}Give blood.<br>Give life.{% endblock %}</h2>
+        <p class="mb-4">{% block art_text %}Join thousands of donors and families who trust LifeFlow to connect blood where it is needed most.{% endblock %}</p>
+        <div class="quote">One donation can save up to three lives.</div>
+      </div>
+      <small style="opacity:.7">&copy; {% now "Y" %} LifeFlow Blood Bank</small>
+    </div>
+    <div class="auth-form">
+      <div class="auth-card {% block cardclass %}{% endblock %}">
+        {% block form_content %}{% endblock %}
+      </div>
+    </div>
+  </div>
+  {% include 'layout/scripts.html' %}
+</body>
+</html>

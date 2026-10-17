@@ -1,0 +1,25 @@
+{% extends 'layout/public.html' %}
+{% block title %}Blood Compatibility Chart{% endblock %}
+{% block nav_script %}<script>document.querySelector('.site-nav').classList.add('solid')</script>{% endblock %}
+{% block content %}
+<section class="section" style="padding-top:8rem">
+  <div class="container">
+    <div class="text-center"><span class="eyebrow">Know your type</span><h1 class="section-title">Blood group compatibility</h1>
+      <p class="section-sub">Find out who you can donate to and who can donate to you. <b>O-</b> is the universal donor and <b>AB+</b> the universal recipient.</p></div>
+    <div class="card-x mb-5"><div class="card-head"><h5><i class="fas fa-table mr-2" style="color:var(--red)"></i>Donor &rarr; Recipient matrix</h5><small class="text-muted">Green = compatible</small></div>
+      <div class="card-pad table-responsive-x">
+        <table class="compat"><thead><tr><th>Donor \ Recipient</th>{% for g in groups %}<th>{{ g }}</th>{% endfor %}</tr></thead><tbody>
+          {% for r in rows %}<tr><th>{{ r.donor }}</th>{% for g in groups %}<td class="{% if g in r.recipients %}yes{% else %}no{% endif %}">{% if g in r.recipients %}<i class="fas fa-check"></i>{% else %}&ndash;{% endif %}</td>{% endfor %}</tr>{% endfor %}
+        </tbody></table>
+      </div></div>
+    <div class="row">
+      {% for r in rows %}
+      <div class="col-md-6 col-lg-3 mb-3"><div class="donor-card"><div class="group-pill mb-2" style="font-size:1.1rem">{{ r.donor }}</div>
+        <div class="small text-muted">Can donate to</div><div class="font-weight-bold mb-2">{{ r.recipients|join:", " }}</div>
+        {% for g, donors in receive.items %}{% if g == r.donor %}<div class="small text-muted">Can receive from</div><div class="font-weight-bold">{{ donors|join:", " }}</div>{% endif %}{% endfor %}
+      </div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

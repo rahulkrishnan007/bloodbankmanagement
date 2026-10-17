@@ -1,0 +1,21 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include 'layout/head.html' %}
+  <title>{% block title %}LifeFlow Blood Bank{% endblock %}</title>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  {% include 'blood/navbar.html' %}
+  {% block nav_script %}{% endblock %}
+  {% include 'layout/messages.html' %}
+  {% block content %}{% endblock %}
+  {% include 'blood/footer.html' %}
+  {% include 'layout/scripts.html' %}
+  <script>
+    (function(){ var n=$('.site-nav'); if(n.hasClass('solid')) return;
+      function f(){ n.toggleClass('scrolled', window.scrollY>30); } f(); $(window).on('scroll',f); })();
+  </script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

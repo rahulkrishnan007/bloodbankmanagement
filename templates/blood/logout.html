@@ -1,0 +1,12 @@
+{% extends 'layout/auth.html' %}
+{% block title %}Logged out{% endblock %}
+{% block art_title %}See you<br>soon!{% endblock %}
+{% block form_content %}
+<div class="text-center">
+  <div class="avatar avatar-lg mx-auto mb-4" style="background:linear-gradient(135deg,var(--ok),#0b7d4d)"><i class="fas fa-check"></i></div>
+  <h2>You have been logged out</h2>
+  <p class="text-muted mb-4">Thank you for being part of the LifeFlow community.</p>
+  <a href="/" class="btn btn-red btn-lg btn-block">Back to home</a>
+  <div class="row mt-3"><div class="col"><a class="btn btn-soft btn-block btn-sm" href="/donor/donorlogin">Donor login</a></div><div class="col"><a class="btn btn-soft btn-block btn-sm" href="/patient/patientlogin">Patient login</a></div></div>
+</div>
+{% endblock %}

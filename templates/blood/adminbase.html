@@ -1,0 +1,19 @@
+{% extends 'layout/app.html' %}
+{% block sidebar %}
+{% with u=request.resolver_match.url_name %}
+<div class="side-label">Overview</div>
+<a class="side-link {% if u == 'admin-dashboard' %}active{% endif %}" href="/admin-dashboard"><i class="fas fa-chart-pie"></i> Dashboard</a>
+<a class="side-link {% if u == 'admin-blood' %}active{% endif %}" href="/admin-blood"><i class="fas fa-tint"></i> Blood Stock</a>
+<div class="side-label">Requests</div>
+<a class="side-link {% if u == 'admin-request' %}active{% endif %}" href="/admin-request"><i class="fas fa-bell"></i> Blood Requests</a>
+<a class="side-link {% if u == 'admin-donation' %}active{% endif %}" href="/admin-donation"><i class="fas fa-hand-holding-medical"></i> Donations</a>
+<a class="side-link {% if u == 'admin-request-history' %}active{% endif %}" href="/admin-request-history"><i class="fas fa-history"></i> Request History</a>
+<div class="side-label">People</div>
+<a class="side-link {% if u == 'admin-donor' or u == 'update-donor' %}active{% endif %}" href="/admin-donor"><i class="fas fa-user-friends"></i> Donors</a>
+<a class="side-link {% if u == 'admin-patient' or u == 'update-patient' %}active{% endif %}" href="/admin-patient"><i class="fas fa-user-injured"></i> Patients</a>
+<a class="side-link {% if u == 'find-donors' %}active{% endif %}" href="/find-donors"><i class="fas fa-search-location"></i> Find Donors</a>
+<div class="side-label">Community</div>
+<a class="side-link {% if u == 'admin-camps' %}active{% endif %}" href="/admin-camps"><i class="fas fa-campground"></i> Donation Camps</a>
+<a class="side-link {% if u == 'notifications' %}active{% endif %}" href="/notifications"><i class="far fa-bell"></i> Notifications{% if unread_count %}<span class="count">{{ unread_count }}</span>{% endif %}</a>
+{% endwith %}
+{% endblock %}

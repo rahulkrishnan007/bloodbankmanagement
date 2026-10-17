@@ -1,0 +1,12 @@
+<div class="row">
+{% for s in stock %}
+  <div class="col-6 col-md-4 col-xl-3 mb-3">
+    <div class="stock-tile lvl-{{ s.level }}">
+      <span class="lvl-tag">{% if s.level == 'good' %}Available{% elif s.level == 'low' %}Low{% else %}Critical{% endif %}</span>
+      <div class="grp">{{ s.group }}<i class="fas fa-tint"></i></div>
+      <div class="qty">{{ s.unit }} <small>ml</small></div>
+      <div class="bar"><span style="width:{{ s.percent }}%"></span></div>
+    </div>
+  </div>
+{% endfor %}
+</div>

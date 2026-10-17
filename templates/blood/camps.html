@@ -1,0 +1,26 @@
+{% extends 'layout/public.html' %}
+{% block title %}Blood Donation Camps{% endblock %}
+{% block nav_script %}<script>document.querySelector('.site-nav').classList.add('solid')</script>{% endblock %}
+{% block content %}
+<section class="section" style="padding-top:8rem">
+  <div class="container">
+    <div class="text-center"><span class="eyebrow">Community drives</span><h1 class="section-title">Blood donation camps</h1><p class="section-sub">Walk in to any upcoming camp and donate. Bring a photo ID.</p></div>
+    <h5 class="mb-3"><i class="fas fa-calendar-check mr-2" style="color:var(--red)"></i>Upcoming</h5>
+    <div class="row mb-4">
+      {% for c in upcoming %}
+      <div class="col-md-6 col-lg-4 mb-3"><div class="camp-card"><div class="camp-date"><b>{{ c.date|date:"d" }}</b><small>{{ c.date|date:"M Y" }}</small></div>
+        <div><h6 class="mb-1">{{ c.title }}</h6>
+          <div class="text-muted small"><i class="fas fa-map-marker-alt mr-1"></i>{{ c.venue }}, {{ c.city }}</div>
+          <div class="text-muted small"><i class="far fa-clock mr-1"></i>{{ c.start_time|time:"g:i A" }} - {{ c.end_time|time:"g:i A" }}</div>
+          {% if c.organizer %}<div class="text-muted small"><i class="fas fa-building mr-1"></i>{{ c.organizer }}</div>{% endif %}
+          {% if c.contact %}<div class="text-muted small"><i class="fas fa-phone-alt mr-1"></i>{{ c.contact }}</div>{% endif %}
+          {% if c.description %}<p class="small mt-2 mb-0">{{ c.description }}</p>{% endif %}</div></div></div>
+      {% empty %}
+      <div class="col-12"><div class="card-x"><div class="empty"><i class="fas fa-campground"></i><h5>No upcoming camps</h5><p class="mb-0">Check back soon - new camps are announced regularly.</p></div></div></div>
+      {% endfor %}
+    </div>
+    {% if past %}<h5 class="mb-3 mt-5 text-muted"><i class="fas fa-history mr-2"></i>Recently held</h5>
+    <div class="row">{% for c in past %}<div class="col-md-6 col-lg-4 mb-3"><div class="camp-card" style="opacity:.7"><div class="camp-date" style="background:#9aa1b2"><b>{{ c.date|date:"d" }}</b><small>{{ c.date|date:"M Y" }}</small></div><div><h6 class="mb-1">{{ c.title }}</h6><div class="text-muted small">{{ c.venue }}, {{ c.city }}</div></div></div></div>{% endfor %}</div>{% endif %}
+  </div>
+</section>
+{% endblock %}

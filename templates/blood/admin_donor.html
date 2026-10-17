@@ -1,0 +1,25 @@
+{% extends 'blood/adminbase.html' %}
+{% block title %}Donors{% endblock %}
+{% block heading %}Donors{% endblock %}
+{% block content %}
+<div class="page-head"><div><h2>Donors</h2><p>{{ page.paginator.count }} registered donor{{ page.paginator.count|pluralize }}</p></div>
+  <a href="/export/donors.csv" class="btn btn-soft"><i class="fas fa-file-csv mr-1"></i>Export CSV</a></div>
+<div class="card-x">
+  {% include 'blood/_filter_people.html' %}
+  {% if page.object_list %}
+  <div class="table-responsive-x"><table class="table-x"><thead><tr><th>Donor</th><th>Group</th><th>Contact</th><th>Donations</th><th>Status</th><th class="text-right">Actions</th></tr></thead><tbody>
+  {% for d in page.object_list %}
+    <tr>
+      <td><div class="cell-user">{% if d.profile_pic %}<img class="avatar" src="{{ d.profile_pic.url }}" alt="">{% else %}<span class="avatar">{{ d.user.first_name|slice:":1"|upper }}</span>{% endif %}<div><b>{{ d.get_name }}</b><small>@{{ d.user.username }}</small></div></div></td>
+      <td><span class="group-pill">{{ d.bloodgroup }}</span></td>
+      <td>{{ d.mobile }}<br><small class="text-muted">{{ d.address }}</small></td>
+      <td><b>{{ d.total_donations }}</b> <small class="text-muted">({{ d.total_units }} ml)</small></td>
+      <td>{% if d.is_eligible %}<span class="badge-status status-approved">Eligible</span>{% else %}<span class="badge-status status-pending">Rests until {{ d.next_eligible_date|date:"d M" }}</span>{% endif %}</td>
+      <td class="text-right" style="white-space:nowrap"><a class="btn btn-soft btn-sm" href="{% url 'update-donor' d.id %}"><i class="fas fa-pen"></i></a>
+        <form method="post" action="{% url 'delete-donor' d.id %}" class="d-inline" data-confirm="Delete {{ d.get_name }} permanently?">{% csrf_token %}<button class="btn btn-soft btn-sm" style="color:var(--red)"><i class="fas fa-trash"></i></button></form></td>
+    </tr>
+  {% endfor %}</tbody></table></div>
+  {% include 'layout/pagination.html' %}
+  {% else %}<div class="empty"><i class="fas fa-user-friends"></i><h5>No donors found</h5><p class="mb-0">Try changing the search or filter.</p></div>{% endif %}
+</div>
+{% endblock %}

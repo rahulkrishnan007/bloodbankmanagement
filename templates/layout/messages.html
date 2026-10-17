@@ -1,0 +1,11 @@
+{% if messages %}
+<div class="toast-stack">
+  {% for m in messages %}
+  <div class="toast-x {{ m.tags }}">
+    <i class="fas {% if m.tags == 'success' %}fa-check-circle{% elif m.tags == 'error' %}fa-times-circle{% elif m.tags == 'warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %}"></i>
+    <div>{{ m }}</div>
+    <button type="button" onclick="this.parentNode.remove()">&times;</button>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}

@@ -1,0 +1,17 @@
+<div class="card-x form-card"><div class="card-pad">
+  <form method="post">
+    {% csrf_token %}
+    {% if request_form.non_field_errors %}<div class="alert-strip danger mb-3">{{ request_form.non_field_errors }}</div>{% endif %}
+    <div class="row">
+      <div class="col-md-8"><div class="form-group"><label>Patient name *</label>{{ request_form.patient_name }}{% for e in request_form.patient_name.errors %}<div class="invalid-msg">{{ e }}</div>{% endfor %}</div></div>
+      <div class="col-md-4"><div class="form-group"><label>Patient age *</label>{{ request_form.patient_age }}{% for e in request_form.patient_age.errors %}<div class="invalid-msg">{{ e }}</div>{% endfor %}</div></div>
+      <div class="col-md-4"><div class="form-group"><label>Blood group *</label>{{ request_form.bloodgroup }}{% for e in request_form.bloodgroup.errors %}<div class="invalid-msg">{{ e }}</div>{% endfor %}</div></div>
+      <div class="col-md-4"><div class="form-group"><label>Quantity (ml) *</label>{{ request_form.unit }}<div class="help-msg">One bag is about 350 - 450 ml.</div>{% for e in request_form.unit.errors %}<div class="invalid-msg">{{ e }}</div>{% endfor %}</div></div>
+      <div class="col-md-4"><div class="form-group"><label>Priority</label>{{ request_form.priority }}</div></div>
+      <div class="col-md-7"><div class="form-group"><label>Hospital / location</label>{{ request_form.hospital }}</div></div>
+      <div class="col-md-5"><div class="form-group"><label>Required by</label>{{ request_form.required_by }}{% for e in request_form.required_by.errors %}<div class="invalid-msg">{{ e }}</div>{% endfor %}</div></div>
+      <div class="col-12"><div class="form-group"><label>Reason / medical condition *</label>{{ request_form.reason }}{% for e in request_form.reason.errors %}<div class="invalid-msg">{{ e }}</div>{% endfor %}</div></div>
+    </div>
+    <button class="btn btn-red btn-lg" type="submit"><i class="fas fa-paper-plane mr-2"></i>Submit request</button>
+  </form>
+</div></div>

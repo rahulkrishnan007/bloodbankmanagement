@@ -1,0 +1,14 @@
+{% extends 'donor/donorbase.html' %}
+{% block title %}Donation History{% endblock %}
+{% block heading %}Donation History{% endblock %}
+{% block content %}
+<div class="page-head"><div><h2>My donations</h2><p>{{ donor.total_donations }} approved donation{{ donor.total_donations|pluralize }} &middot; {{ donor.total_units }} ml in total</p></div><a href="/donor/donate-blood" class="btn btn-red"><i class="fas fa-plus mr-1"></i>New donation</a></div>
+<div class="card-x">
+{% if page.object_list %}
+<div class="table-responsive-x"><table class="table-x"><thead><tr><th>Date</th><th>Group</th><th>Unit</th><th>Age</th><th>Disease</th><th>Status</th><th></th></tr></thead><tbody>
+{% for t in page.object_list %}<tr><td>{{ t.date }}</td><td><span class="group-pill">{{ t.bloodgroup }}</span></td><td>{{ t.unit }} ml</td><td>{{ t.age }}</td><td>{{ t.disease }}</td><td><span class="badge-status status-{{ t.status|lower }}">{{ t.status }}</span></td>
+<td class="text-right">{% if t.status == 'Approved' %}<a class="btn btn-soft btn-sm" target="_blank" href="{% url 'certificate' t.id %}"><i class="fas fa-certificate mr-1"></i>Certificate</a>{% endif %}</td></tr>{% endfor %}</tbody></table></div>
+{% include 'layout/pagination.html' %}
+{% else %}<div class="empty"><i class="fas fa-tint"></i><h5>No donations yet</h5><p>Your donation history will appear here.</p><a href="/donor/donate-blood" class="btn btn-red">Donate blood</a></div>{% endif %}
+</div>
+{% endblock %}

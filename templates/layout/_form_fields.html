@@ -1,0 +1,14 @@
+{% comment %} Renders every field of a form with label, error and help text. {% endcomment %}
+{% for field in form %}
+<div class="form-group {% if field.field.widget.input_type == 'checkbox' %}custom-control custom-switch{% endif %}">
+  {% if field.field.widget.input_type == 'checkbox' %}
+    {{ field }}<label class="custom-control-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+  {% else %}
+    <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span style="color:var(--red)">*</span>{% endif %}</label>
+    {{ field }}
+  {% endif %}
+  {% if field.help_text %}<div class="help-msg">{{ field.help_text|safe }}</div>{% endif %}
+  {% for e in field.errors %}<div class="invalid-msg"><i class="fas fa-exclamation-circle"></i> {{ e }}</div>{% endfor %}
+</div>
+{% endfor %}
+{% if form.non_field_errors %}<div class="alert-strip danger mb-3">{{ form.non_field_errors }}</div>{% endif %}

@@ -1,0 +1,15 @@
+{% extends 'blood/adminbase.html' %}
+{% block title %}Update Patient{% endblock %}
+{% block heading %}Update Patient{% endblock %}
+{% block content %}
+<div class="page-head"><div><h2>Edit patient details</h2><p>Changes are saved immediately.</p></div><a href="/admin-patient" class="btn btn-soft">&larr; Back</a></div>
+<div class="card-x form-card"><div class="card-pad">
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="row">
+  {% for field in userForm %}<div class="col-md-6"><div class="form-group"><label>{{ field.label }}</label>{{ field }}<div class="help-msg">{{ field.help_text }}</div>{% for e in field.errors %}<div class="invalid-msg">{{ e }}</div>{% endfor %}</div></div>{% endfor %}
+  {% for field in patientForm %}<div class="col-md-6"><div class="form-group"><label>{{ field.label }}</label>{{ field }}{% for e in field.errors %}<div class="invalid-msg">{{ e }}</div>{% endfor %}</div></div>{% endfor %}
+  </div>
+  <button class="btn btn-red btn-lg" type="submit"><i class="fas fa-save mr-1"></i>Save changes</button>
+</form></div></div>
+{% endblock %}

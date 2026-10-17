@@ -1,0 +1,22 @@
+{% extends 'blood/adminbase.html' %}
+{% block title %}Patients{% endblock %}
+{% block heading %}Patients{% endblock %}
+{% block content %}
+<div class="page-head"><div><h2>Patients</h2><p>{{ page.paginator.count }} registered patient{{ page.paginator.count|pluralize }}</p></div></div>
+<div class="card-x">
+  {% include 'blood/_filter_people.html' %}
+  {% if page.object_list %}
+  <div class="table-responsive-x"><table class="table-x"><thead><tr><th>Patient</th><th>Group</th><th>Age</th><th>Disease</th><th>Doctor</th><th>Contact</th><th class="text-right">Actions</th></tr></thead><tbody>
+  {% for p in page.object_list %}
+    <tr>
+      <td><div class="cell-user">{% if p.profile_pic %}<img class="avatar" src="{{ p.profile_pic.url }}" alt="">{% else %}<span class="avatar">{{ p.user.first_name|slice:":1"|upper }}</span>{% endif %}<div><b>{{ p.get_name }}</b><small>@{{ p.user.username }}</small></div></div></td>
+      <td><span class="group-pill">{{ p.bloodgroup }}</span></td><td>{{ p.age }}</td><td>{{ p.disease }}</td><td>{{ p.doctorname }}</td>
+      <td>{{ p.mobile }}<br><small class="text-muted">{{ p.address }}</small></td>
+      <td class="text-right" style="white-space:nowrap"><a class="btn btn-soft btn-sm" href="{% url 'update-patient' p.id %}"><i class="fas fa-pen"></i></a>
+        <form method="post" action="{% url 'delete-patient' p.id %}" class="d-inline" data-confirm="Delete {{ p.get_name }} permanently?">{% csrf_token %}<button class="btn btn-soft btn-sm" style="color:var(--red)"><i class="fas fa-trash"></i></button></form></td>
+    </tr>
+  {% endfor %}</tbody></table></div>
+  {% include 'layout/pagination.html' %}
+  {% else %}<div class="empty"><i class="fas fa-user-injured"></i><h5>No patients found</h5><p class="mb-0">Try changing the search or filter.</p></div>{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'blood/adminbase.html' %}
+{% block title %}Blood Requests{% endblock %}
+{% block heading %}Blood Requests{% endblock %}
+{% block content %}
+<div class="page-head"><div><h2>Pending blood requests</h2><p>Emergency and urgent requests are shown first.</p></div>
+  <div><a href="/export/requests.csv" class="btn btn-soft mr-1"><i class="fas fa-file-csv mr-1"></i>Export CSV</a><a href="/admin-request-history" class="btn btn-outline-red">History</a></div></div>
+<div class="card-x">
+  {% if requests %}
+  <div class="table-responsive-x"><table class="table-x"><thead><tr><th>Priority</th><th>Patient</th><th>Group</th><th>Quantity</th><th>In stock</th><th>Hospital / reason</th><th class="text-right">Action</th></tr></thead><tbody>
+  {% for t in requests %}
+    <tr>
+      <td><span class="prio prio-{{ t.priority|lower }}">{% if t.priority == 'Emergency' %}<i class="fas fa-ambulance"></i>{% endif %}{{ t.priority }}</span></td>
+      <td><b>{{ t.patient_name }}</b><br><small class="text-muted">Age {{ t.patient_age }} &middot; {{ t.date }}</small></td>
+      <td><span class="group-pill">{{ t.bloodgroup }}</span></td>
+      <td><b>{{ t.unit }}</b> ml</td>
+      <td>{% if t.stock_ok %}<span class="badge-status status-approved">{{ t.stock_available }} ml</span>{% else %}<span class="badge-status status-rejected">{{ t.stock_available }} ml (short)</span>{% endif %}</td>
+      <td style="max-width:260px">{% if t.hospital %}<b>{{ t.hospital }}</b><br>{% endif %}<small class="text-muted">{{ t.reason }}</small>{% if t.required_by %}<br><small style="color:var(--red)"><i class="far fa-calendar-alt mr-1"></i>Needed by {{ t.required_by|date:"d M" }}</small>{% endif %}</td>
+      <td class="text-right" style="white-space:nowrap">
+        <form method="post" action="{% url 'update-approve-status' t.id %}" class="d-inline" data-confirm="Approve and deduct {{ t.unit }} ml of {{ t.bloodgroup }} from stock?">{% csrf_token %}<button class="btn btn-ok btn-sm"><i class="fas fa-check mr-1"></i>Approve</button></form>
+        <form method="post" action="{% url 'update-reject-status' t.id %}" class="d-inline" data-confirm="Reject this request?">{% csrf_token %}<button class="btn btn-soft btn-sm" style="color:var(--red)"><i class="fas fa-times mr-1"></i>Reject</button></form>
+      </td>
+    </tr>
+  {% endfor %}</tbody></table></div>
+  {% else %}<div class="empty"><i class="fas fa-check-circle"></i><h5>All caught up!</h5><p class="mb-0">There are no pending blood requests.</p></div>{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends 'patient/patientbase.html' %}
+{% block title %}My Requests{% endblock %}
+{% block heading %}My Requests{% endblock %}
+{% block content %}
+<div class="page-head"><div><h2>My blood requests</h2><p>Track the status of every request.</p></div><a href="/patient/make-request" class="btn btn-red"><i class="fas fa-plus mr-1"></i>New request</a></div>
+{% include 'layout/_request_table.html' with new_url='/patient/make-request' %}
+{% endblock %}
